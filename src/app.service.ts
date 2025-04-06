@@ -12,7 +12,7 @@ export class AppService {
   ) {}
 
   async getUser(email: string, password: string): Promise<User | null> {
-    return this.usersRepository.findOne({
+    return await this.usersRepository.findOne({
       where: {
         email,
         password,
@@ -22,6 +22,6 @@ export class AppService {
 
   async createUser(user: User): Promise<User> {
     const newUser = this.usersRepository.create(user);
-    return this.usersRepository.save(newUser);
+    return await this.usersRepository.save(newUser);
   }
 }

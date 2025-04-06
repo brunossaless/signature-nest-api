@@ -11,11 +11,11 @@ export class AppController {
     @Query('email') email: string,
     @Query('password') password: string,
   ): Promise<User | null> {
-    return this.appService.getUser(email, password);
+    return await this.appService.getUser(email, password);
   }
 
   @Post()
   async createUser(@Body() user: User): Promise<User> {
-    return this.appService.createUser(user);
+    return await this.appService.createUser(user);
   }
 }
