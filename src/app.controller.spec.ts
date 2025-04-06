@@ -7,7 +7,7 @@ describe('AppController', () => {
   let appController: AppController;
 
   const mockAppService = {
-    getUser: jest.fn(),
+    login: jest.fn(),
     createUser: jest.fn(),
   };
 
@@ -29,7 +29,7 @@ describe('AppController', () => {
     jest.clearAllMocks();
   });
 
-  describe('getUser', () => {
+  describe('login', () => {
     it('should return a user when credentials are valid', async () => {
       const mockUser: User = {
         id: '1',
@@ -38,35 +38,35 @@ describe('AppController', () => {
         created_at: new Date(),
       };
 
-      mockAppService.getUser.mockResolvedValue(mockUser);
+      mockAppService.login.mockResolvedValue(mockUser);
 
-      const result = await appController.getUser(
-        'test@example.com',
-        'password123',
-      );
+      const result = await appController.login({
+        email: 'test@example.com',
+        password: 'password123',
+      });
 
       expect(result).toEqual(mockUser);
-      expect(mockAppService.getUser).toHaveBeenCalledWith(
+      expect(mockAppService.login).toHaveBeenCalledWith(
         'test@example.com',
         'password123',
       );
-      expect(mockAppService.getUser).toHaveBeenCalledTimes(1);
+      expect(mockAppService.login).toHaveBeenCalledTimes(1);
     });
 
     it('should return null when user is not found', async () => {
-      mockAppService.getUser.mockResolvedValue(null);
+      mockAppService.login.mockResolvedValue(null);
 
-      const result = await appController.getUser(
-        'wrong@email.com',
-        'wrongpass',
-      );
+      const result = await appController.login({
+        email: 'wrong@email.com',
+        password: 'wrongpass',
+      });
 
       expect(result).toBeNull();
-      expect(mockAppService.getUser).toHaveBeenCalledWith(
+      expect(mockAppService.login).toHaveBeenCalledWith(
         'wrong@email.com',
         'wrongpass',
       );
-      expect(mockAppService.getUser).toHaveBeenCalledTimes(1);
+      expect(mockAppService.login).toHaveBeenCalledTimes(1);
     });
   });
 

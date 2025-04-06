@@ -11,17 +11,23 @@ export class AppService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async getUser(email: string, password: string): Promise<User | null> {
-    return await this.usersRepository.findOne({
+  async login(email: string, password: string): Promise<User | null> {
+    const user = await this.usersRepository.findOne({
       where: {
         email,
         password,
       },
     });
+
+    if (user && user.password === password) {
+      return user;
+    }
+
+    throw new Error('User not found');
   }
 
   async createUser(user: User): Promise<User> {
     const newUser = this.usersRepository.create(user);
-    return await this.usersRepository.save(newUser);
+    return this.usersRepository.save(newUser);
   }
 }
